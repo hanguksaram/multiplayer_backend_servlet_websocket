@@ -24,7 +24,7 @@
 
             %>
         </div>
-        <button onclick="location.href= '/' + '?logout=true'">Начать дуэль</button>
+        <button onclick="location.href= '/duelfield'">Начать дуэль</button>
     </div>
 </div>
 </body>

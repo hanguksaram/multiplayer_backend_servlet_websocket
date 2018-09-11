@@ -1,5 +1,6 @@
 package app.services;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
 import javax.websocket.Session;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
 
 import app.models.GameSession;
 
-
+@ApplicationScoped
 public class GameSessionHandler {
     private final LinkedBlockingQueue<Session> sessionAccumulator = new LinkedBlockingQueue<Session>();
     private final ConcurrentMap<String, GameSession> sessionGame = new ConcurrentHashMap<String, GameSession>();
@@ -35,7 +36,9 @@ public class GameSessionHandler {
             sessionGame.putIfAbsent(id, new GameSession(sessionOne, sessionTwo));
             JsonProvider provider = JsonProvider.provider();
             JsonObject gameId = provider.createObjectBuilder()
-                    .add("gameId", id).build();
+                    .add("gameId", id)
+                    .add("status", "startGame")
+                    .build();
             sendToSession(sessionOne, gameId);
             sendToSession(sessionTwo, gameId);
         }

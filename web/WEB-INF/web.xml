@@ -31,6 +31,15 @@
         <servlet-name>duels</servlet-name>
         <url-pattern>/duels</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>duelfield</servlet-name>
+        <servlet-class>app.servlets.DuelFieldServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>duelfield</servlet-name>
+        <url-pattern>/duelfield</url-pattern>
+    </servlet-mapping>
     <resource-ref>
         <description>DB Connection</description>
         <res-ref-name>jdbc/test_game</res-ref-name>
