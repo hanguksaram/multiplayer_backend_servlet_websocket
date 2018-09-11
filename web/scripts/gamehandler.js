@@ -20,7 +20,7 @@ function runTimer() {
 }
 function messageHandler(event) {
     console.log(event.data);
-    var data = json.parse(event.data);
+    var data = JSON.parse(event.data);
     switch (data.status) {
         case "startGame":
             runTimer();

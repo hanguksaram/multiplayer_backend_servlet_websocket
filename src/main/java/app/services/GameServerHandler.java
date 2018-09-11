@@ -13,18 +13,17 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/duelsession", configurator = HttpSessionConfigurator.class)
 public class GameServerHandler {
 
-    @Inject
-    private GameSessionHandler gameSessionsHandler;
+   // @Inject
+   // private GameSessionHandler gameSessionsHandler;
     private HttpSession httpSession;
     @OnOpen
     public void open(Session session, EndpointConfig config) {
-        //this.httpSession = (HttpSession) config.getUserProperties()
-               // .get(HttpSession.class.getName());
-       // UserDtoResponse user = (UserDtoResponse) this.httpSession.getAttribute("user");
-       // try{session.getBasicRemote().sendText(user.getName());}
-       // catch (Exception ex) {}
-        //gameSessionsHandler.startGame(session);
-        gameSessionsHandler.startGame(session);
+     //   this.httpSession = (HttpSession) config.getUserProperties()
+     //           .get(HttpSession.class.getName());
+     //   UserDtoResponse user = (UserDtoResponse) this.httpSession.getAttribute("user");
+     //   try{session.getBasicRemote().sendText(user.getName());}
+      //  catch (Exception ex) {}
+        GameSessionHandler.startGame(session);
     }
 
     @OnClose

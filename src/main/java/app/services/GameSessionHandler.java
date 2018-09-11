@@ -1,6 +1,7 @@
 package app.services;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
 import javax.websocket.Session;
@@ -15,11 +16,12 @@ import java.util.logging.Logger;
 import app.models.GameSession;
 
 @ApplicationScoped
+@Default
 public class GameSessionHandler {
-    private final LinkedBlockingQueue<Session> sessionAccumulator = new LinkedBlockingQueue<Session>();
-    private final ConcurrentMap<String, GameSession> sessionGame = new ConcurrentHashMap<String, GameSession>();
+    private static final LinkedBlockingQueue<Session> sessionAccumulator = new LinkedBlockingQueue<Session>();
+    private static final ConcurrentMap<String, GameSession> sessionGame = new ConcurrentHashMap<String, GameSession>();
 
-    public void startGame(Session session)  {
+    public static void startGame(Session session)  {
         try{
             sessionAccumulator.put(session);
             createGameSession();
@@ -28,7 +30,7 @@ public class GameSessionHandler {
             ex.printStackTrace();
         }
     }
-    private void createGameSession(){
+    private static void createGameSession(){
         if (sessionAccumulator.size() % 2 == 0) {
             Session sessionOne = sessionAccumulator.poll();
             Session sessionTwo = sessionAccumulator.poll();
@@ -46,7 +48,7 @@ public class GameSessionHandler {
     private void setTimerBeforeGameStart(String id, GameSession gameSession) {
 
     }
-    private void sendToSession(Session session, JsonObject message) {
+    private static void sendToSession(Session session, JsonObject message) {
         try {
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
