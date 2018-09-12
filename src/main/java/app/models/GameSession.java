@@ -3,27 +3,27 @@ package app.models;
 import javax.websocket.Session;
 
 public class GameSession {
-    private Session sessionOne;
-    private Session sessionTwo;
+    private UserSession sessionOne;
+    private UserSession sessionTwo;
 
-    public GameSession(Session sessionOne, Session sessionTwo) {
+    public GameSession(UserSession sessionOne, UserSession sessionTwo) {
         this.sessionOne = sessionOne;
         this.sessionTwo = sessionTwo;
     }
 
-    public Session getSessionOne() {
+    public UserSession getSessionOne() {
         return sessionOne;
     }
 
-    public void setSessionOne(Session sessionOne) {
+    public void setSessionOne(UserSession sessionOne) {
         this.sessionOne = sessionOne;
     }
 
-    public Session getSessionTwo() {
+    public UserSession getSessionTwo() {
         return sessionTwo;
     }
 
-    public void setSessionTwo(Session sessionTwo) {
+    public void setSessionTwo(UserSession sessionTwo) {
         this.sessionTwo = sessionTwo;
     }
 }

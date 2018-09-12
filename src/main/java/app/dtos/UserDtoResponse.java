@@ -3,10 +3,19 @@ package app.dtos;
 public class UserDtoResponse {
     private int id;
     private String name;
+    private UserHeroDto userHero;
 
     public UserDtoResponse(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public UserHeroDto getUserHero() {
+        return userHero;
+    }
+
+    public void setUserHero(UserHeroDto userHero) {
+        this.userHero = userHero;
     }
 
     public int getId() {

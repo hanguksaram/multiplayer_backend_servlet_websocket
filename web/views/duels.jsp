@@ -17,6 +17,7 @@
 <div class="container">
     <div class="menu">
         <div class="characteristic">
+            <h2> Ваши характеристики: </h2>
             <%
                 UserHero userHero = (UserHero) request.getAttribute("userHero");
                 out.println("<div>Rating: " + userHero.getRating() +"</div>" +

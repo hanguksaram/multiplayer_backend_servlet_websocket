@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class DuelFieldServlet extends HttpServlet {
     @Override
@@ -18,6 +19,8 @@ public class DuelFieldServlet extends HttpServlet {
         HttpSession session = req.getSession();
         UserDtoResponse userDtoResponse = (UserDtoResponse)session.getAttribute("user");
         if (userDtoResponse != null) {
+            req.setAttribute("rating", userDtoResponse.getUserHero().getRating());
+            req.setAttribute("name", userDtoResponse.getName());
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/duelfield.jsp");
             requestDispatcher.forward(req, resp);
         }

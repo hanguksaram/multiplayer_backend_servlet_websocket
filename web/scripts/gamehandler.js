@@ -14,16 +14,36 @@ function runTimer() {
     var intervalId = setInterval(function() {
         --time;
         timerDiv.innerText = time;
-        if (time == 0) clearInterval(intervalId);},
+        if (time == 0){ clearInterval(intervalId);removePopup()}
+        },
     1000);
 
 }
 function messageHandler(event) {
+
     console.log(event.data);
     var data = JSON.parse(event.data);
     switch (data.status) {
-        case "startGame":
+        case "start":
+            removePreloader();
+            previewEnemy(data);
             runTimer();
 
     }
+}
+function removePreloader() {
+    var preloader = document.getElementsByClassName("container__preloader")[0];
+    preloader.parentNode.removeChild(preloader);
+}
+function previewEnemy(enemyObj) {
+    var enemyNickName = document.getElementsByClassName("enemyNickname");
+    var enemyRating = document.getElementsByClassName("enemyRating");
+    for (var i = 0; i < enemyNickName.length; i++) {
+        enemyNickName[i].innerText = "Имя: " +enemyObj.enemyNickname;
+        enemyRating[i].innerText = "Рэйтинг: " + enemyObj.enemyRating;
+    }
+    document.getElementById("enemy_description").style.display = "flex";
+}
+function removePopup() {
+    document.getElementsByClassName("container")[0].classList.add("container--closed");
 }
