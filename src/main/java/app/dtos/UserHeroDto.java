@@ -3,11 +3,12 @@ package app.dtos;
 public class UserHeroDto {
     private int rating;
     private int damageMultiplier;
-    private int health = 100;
+    private int health;
 
-    public UserHeroDto(int rating, int damageMultiplier) {
+    public UserHeroDto(int rating, int damageMultiplier, int health) {
         this.rating = rating;
         this.damageMultiplier = damageMultiplier;
+        this.health = health;
     }
 
     public int getRating() {

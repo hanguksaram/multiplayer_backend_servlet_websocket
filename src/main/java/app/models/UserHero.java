@@ -4,13 +4,14 @@ public class UserHero {
     private int id;
     private int rating;
     private int damageMultiplier;
-    private int health = 100;
+    private int health;
 
     public UserHero(){};
-    public UserHero(int rating, int damageMultiplier, int id) {
+    public UserHero(int rating, int damageMultiplier, int id, int health) {
         this.id = id;
         this.damageMultiplier = damageMultiplier;
         this.rating = rating;
+        this.health = health;
     }
     public int getId() {
         return id;

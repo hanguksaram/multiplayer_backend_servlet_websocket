@@ -1,6 +1,7 @@
 var wsUri = "ws://" + document.location.host + "/duelsession";
 var websocket = new WebSocket(wsUri);
 
+// window.onunload = websocket.close();
 websocket.onerror = function(evt) { onError(evt) };
 websocket.onopen = function() {
     console.log("socket was opened")
@@ -28,6 +29,10 @@ function messageHandler(event) {
             removePreloader();
             previewEnemy(data);
             runTimer();
+            break;
+        case "connectionlost":
+            alert("Противник отключился");
+            document.location.href = document.location.host + "/menu";
 
     }
 }

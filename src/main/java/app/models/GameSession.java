@@ -3,12 +3,22 @@ package app.models;
 import javax.websocket.Session;
 
 public class GameSession {
+    private String gameSessionId;
     private UserSession sessionOne;
     private UserSession sessionTwo;
 
-    public GameSession(UserSession sessionOne, UserSession sessionTwo) {
+    public GameSession(String gameSessionId ,UserSession sessionOne, UserSession sessionTwo) {
+        this.gameSessionId = gameSessionId;
         this.sessionOne = sessionOne;
         this.sessionTwo = sessionTwo;
+    }
+
+    public String getGameSessionId() {
+        return gameSessionId;
+    }
+
+    public void setGameSessionId(String gameSessionId) {
+        this.gameSessionId = gameSessionId;
     }
 
     public UserSession getSessionOne() {

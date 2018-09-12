@@ -28,6 +28,7 @@ public class CharacterRepoImpl implements CharacterRepo {
                 userHero.setId(resultSet.getInt("User_ID"));
                 userHero.setRating(resultSet.getInt("Rating"));
                 userHero.setDamageMultiplier(resultSet.getInt("DamageMultiplier"));
+                userHero.setHealth(resultSet.getInt("health"));
             }
 
         }
@@ -54,8 +55,8 @@ public class CharacterRepoImpl implements CharacterRepo {
                     "values (?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userId);
-            stmt.setInt(2, 1);
-            stmt.setInt(3, 1);
+            stmt.setInt(2, 1);//Raitng
+            stmt.setInt(3, 10);//Damage
             stmt.execute();
             userHero = getCharacterByUserId(userId);
 
