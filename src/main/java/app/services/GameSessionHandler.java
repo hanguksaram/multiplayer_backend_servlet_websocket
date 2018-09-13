@@ -24,9 +24,6 @@ public class GameSessionHandler {
 
     public static String startGame(UserSession session)  {
 
-        sessionGame.forEach(k -> {
-            if k.
-        });
         try{
             sessionAccumulator.put(session);
             if (sessionAccumulator.size() % 2 == 0)
@@ -45,9 +42,9 @@ public class GameSessionHandler {
             String id = String.valueOf(new Date().getTime());
             GameSession gameSession = new GameSession(id ,sessionOne, sessionTwo);
             sessionGame.add(gameSession);
-            Map<String, Session> notifyObject = GameStatusNotifier.createGameNotification(gameSession, GameStatusNotifier.gameStatus.START);
+            Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession, GameStatusNotifier.gameStatus.START);
             if (notifyObject != null) {
-                notifyObject.forEach((k, v) -> sendToSession(v, k));
+                notifyObject.forEach((k, v) -> sendToSession(k, v));
             }
             return id;
 
@@ -58,7 +55,7 @@ public class GameSessionHandler {
     public static void handleDamageDeal(String gameSessionId, String userDamageDealerId) {
 
     }
-    private static void sendToSession(Session session, String message) {
+    public static void sendToSession(Session session, String message) {
         try {
             session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
@@ -76,9 +73,9 @@ public class GameSessionHandler {
             //if(!gameSession.getSessionTwo().getSessionId().equals(sessionId)) {
               //  sendToSession(gameSession.getSessionTwo(),    );
             //}
-            Map<String, Session> notifyObject = GameStatusNotifier.createGameNotification(gameSession,
+            Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession,
                     GameStatusNotifier.gameStatus.CONNECTIONLOST);
-            notifyObject.forEach((k, v) -> sendToSession(v, k));
+            notifyObject.forEach((k, v) -> sendToSession(k, v));
             sessionGame = sessionGame.stream().filter(x -> !x.getSessionOne().getSessionId().equals(sessionId) &&
                     !x.getSessionTwo().getSessionId().equals(sessionId))
                     .collect(Collectors.toCollection(CopyOnWriteArrayList<GameSession>::new));
@@ -92,6 +89,12 @@ public class GameSessionHandler {
                 func.accept(k, session);
 
         });
+    }
+    public static GameSession findGameSessionByUserSession(Session userSession) {
+        GameSession gameSession = sessionGame.stream().filter(x -> x.getSessionTwo().getSessionId().equals(userSession.getId())
+                || x.getSessionOne().getSessionId().equals(userSession.getId())).findFirst().orElse(null);
+        return gameSession;
+
     }
 
 

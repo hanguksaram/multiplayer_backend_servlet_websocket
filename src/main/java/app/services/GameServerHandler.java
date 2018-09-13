@@ -3,19 +3,15 @@ package app.services;
 import app.dtos.UserDtoResponse;
 import app.models.GameSession;
 import app.models.UserSession;
-import org.jboss.weld.context.http.Http;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
 
-@ApplicationScoped
+
 @ServerEndpoint(value = "/duelsession", configurator = HttpSessionConfigurator.class)
 public class GameServerHandler {
 
@@ -48,8 +44,16 @@ public class GameServerHandler {
         String[] clientMessages = JsonHandler.readPropertyFromObject(message, "status", "gameSessionId");
         switch(clientMessages[0]){
             case "damage":
-                GameSessionHandler.addActionToGameSession(GameMechanicsHandler::calculateDamage,
-                        x -> x.getGameSessionId().equals(clientMessages[1]));
+                GameSessionHandler.addActionToGameSession(GameMechanicsHandler::difineDamageDealer,
+                        x -> x.getGameSessionId().equals(clientMessages[1]), session);
+                GameSession gameSession = GameSessionHandler.findGameSessionByUserSession(session);
+                if (gameSession != null) {
+                    Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession, GameStatusNotifier.gameStatus.DAMAGE);
+                    if (notifyObject != null) {
+                        notifyObject.forEach((k, v) -> GameSessionHandler.sendToSession(k, v));
+                    }
+
+                }
         }
     }
 
@@ -58,6 +62,7 @@ public class GameServerHandler {
         HttpSession httpSession = getHttpSession(config);
         UserDtoResponse userDto = (UserDtoResponse) httpSession.getAttribute("user");
         httpSession.setAttribute("socketSessionId", session.getId());
+        userDto.getUserHero().setSessionId(Integer.parseInt(session.getId()));
         return new UserSession(session, userDto);
     }
     private HttpSession getHttpSession(EndpointConfig config) {

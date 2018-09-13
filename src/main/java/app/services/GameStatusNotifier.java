@@ -13,29 +13,34 @@ public class GameStatusNotifier {
 
     private static JsonProvider provider = JsonProvider.provider();
 
-    public static Map<String, Session> createGameNotification(GameSession gameSession, GameStatusNotifier.gameStatus status) {
+    public static Map<Session, String> createGameNotification(GameSession gameSession, GameStatusNotifier.gameStatus status) {
 
-        Map<String, Session> notifyObject = new HashMap<>();
+        Map<Session, String> notifyObject = new HashMap<>();
 
         switch (status) {
             case START:
-                String message = createJsonMessage(gameSession.getGameSessionId(), gameStatus.START, gameSession.getSessionTwo());
-                notifyObject.put(message, gameSession.getSessionOne().getSession());
-                message = createJsonMessage(gameSession.getGameSessionId(), gameStatus.START, gameSession.getSessionOne());
-                notifyObject.put(message, gameSession.getSessionTwo().getSession());
+                String message = createStatusGameMessage(gameSession.getGameSessionId(), gameStatus.START, gameSession.getSessionTwo());
+                notifyObject.put(gameSession.getSessionOne().getSession(), message);
+                message = createStatusGameMessage(gameSession.getGameSessionId(), gameStatus.START, gameSession.getSessionOne());
+                notifyObject.put(gameSession.getSessionTwo().getSession(), message);
                 return notifyObject;
             case CONNECTIONLOST:
-                message = createJsonMessage(gameSession.getGameSessionId(), gameStatus.CONNECTIONLOST, gameSession.getSessionTwo());
-                notifyObject.put(message, gameSession.getSessionOne().getSession());
-                message = createJsonMessage(gameSession.getGameSessionId(), gameStatus.START, gameSession.getSessionOne());
-                notifyObject.put(message, gameSession.getSessionTwo().getSession());
+                message = createStatusGameMessage(gameSession.getGameSessionId(), gameStatus.CONNECTIONLOST, gameSession.getSessionTwo());
+                notifyObject.put(gameSession.getSessionOne().getSession(), message);
+                message = createStatusGameMessage(gameSession.getGameSessionId(), gameStatus.START, gameSession.getSessionOne());
+                notifyObject.put(gameSession.getSessionTwo().getSession(), message);
+                return notifyObject;
+            case DAMAGE:
+                message = JsonHandler.createJsonMessage(status, gameSession.getSessionOne().getUserDto().getUserHero(), gameSession.getSessionTwo().getUserDto().getUserHero());
+                notifyObject.put(gameSession.getSessionOne().getSession(), message);
+                notifyObject.put(gameSession.getSessionTwo().getSession(), message);
                 return notifyObject;
 
             default:
                 return null;
         }
     }
-    private static String createJsonMessage(String gameId, GameStatusNotifier.gameStatus status, UserSession session) {
+    private static String createStatusGameMessage(String gameId, GameStatusNotifier.gameStatus status, UserSession session) {
         JsonObject gameObject = provider.createObjectBuilder()
                 .add("gameId", gameId)
                 .add("sessionId", session.getSession().getId())
@@ -48,7 +53,7 @@ public class GameStatusNotifier {
     }
 
     public enum gameStatus {
-        START, PAUSE, END, CONNECTIONLOST;
+        START, PAUSE, END, CONNECTIONLOST, DAMAGE;
 
         @Override public String toString() {
             String s = super.toString();
