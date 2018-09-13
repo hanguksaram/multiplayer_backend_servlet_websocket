@@ -1,7 +1,5 @@
 package app.services;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.Date;
@@ -16,8 +14,8 @@ import java.util.stream.Collectors;
 import app.models.GameSession;
 import app.models.UserSession;
 
-@ApplicationScoped
-@Default
+
+
 public class GameSessionHandler {
     private static LinkedBlockingQueue<UserSession> sessionAccumulator = new LinkedBlockingQueue<>();
     private static CopyOnWriteArrayList<GameSession> sessionGame = new CopyOnWriteArrayList<>();
