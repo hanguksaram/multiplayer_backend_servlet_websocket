@@ -1,4 +1,4 @@
-var wsUri = "ws://" + document.location.host + "/duelsession";
+var wsUri = "wss://" + document.location.host + "/duelsession";
 var websocket = new WebSocket(wsUri);
 var gameID;
 var sessionID;

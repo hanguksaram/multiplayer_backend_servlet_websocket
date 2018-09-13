@@ -20,7 +20,8 @@ public class CharacterRepoImpl implements CharacterRepo {
         ResultSet resultSet = null;
         UserHero userHero = new UserHero();
         try {
-            conn = dataSource.getConnection();
+            conn = UnitOfWork.getConnection();
+            //conn = dataSource.getConnection();
             String sql = "select * from Characters where User_ID = " + "'" + userId + "'";
             stmt = conn.createStatement();
             resultSet = stmt.executeQuery(sql);
@@ -32,7 +33,7 @@ public class CharacterRepoImpl implements CharacterRepo {
             }
 
         }
-        catch (SQLException ex) {
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         finally {
@@ -50,7 +51,8 @@ public class CharacterRepoImpl implements CharacterRepo {
         UserHero userHero = null;
 
         try {
-            conn = dataSource.getConnection();
+            conn = UnitOfWork.getConnection();
+            //conn = dataSource.getConnection();
             String sql = "insert into Characters " +
                     "values (?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
@@ -62,7 +64,7 @@ public class CharacterRepoImpl implements CharacterRepo {
             userHero = getCharacterByUserId(userId);
 
         }
-        catch (SQLException ex) {
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         finally {

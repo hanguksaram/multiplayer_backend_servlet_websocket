@@ -1,9 +1,8 @@
 package app.repos;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.*;
 
 public class UnitOfWork {
 
@@ -22,5 +21,14 @@ public class UnitOfWork {
         catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+    public static Connection getConnection() throws URISyntaxException, SQLException {
+        URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
+
+        return DriverManager.getConnection(dbUrl, username, password);
     }
 }

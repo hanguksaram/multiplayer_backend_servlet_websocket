@@ -21,8 +21,8 @@ public class UserRepoImpl implements UserRepo {
         ResultSet resultSet = null;
         User user = new User();
         try {
-
-            conn = dataSource.getConnection();
+            conn = UnitOfWork.getConnection();
+            //conn = dataSource.getConnection();
             String sql = "select * from Users where Login = " + "'" + name + "'";
             stmt = conn.createStatement();
             resultSet = stmt.executeQuery(sql);
@@ -32,7 +32,7 @@ public class UserRepoImpl implements UserRepo {
                 user.setPassword(resultSet.getString("Password"));
             }
         }
-        catch (SQLException ex) {
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         finally {
@@ -49,7 +49,8 @@ public class UserRepoImpl implements UserRepo {
         User user = null;
 
         try {
-            conn = dataSource.getConnection();
+            conn = UnitOfWork.getConnection();
+            //conn = dataSource.getConnection();
             String sql = "insert into Users (Login, Password)\n" +
                     "values (?, ?)";
             stmt = conn.prepareStatement(sql);
@@ -59,7 +60,7 @@ public class UserRepoImpl implements UserRepo {
             user = this.getUserByName(userDto.getLogin());
 
         }
-        catch (SQLException ex) {
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         finally {
