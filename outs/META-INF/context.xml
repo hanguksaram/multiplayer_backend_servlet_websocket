@@ -1,8 +1,0 @@
-<Context>
-    <Resource name="jdbc/test_game" auth="Container" type="javax.sql.DataSource" maxTotal="100" maxIdle="30" maxWaitMillis="10000"
-              username="newuser" password="password" driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/test01"/>
-    <!--<Resource name="jdbc/test_game" auth="Container" type="javax.sql.DataSource" maxTotal="100" maxIdle="30" maxWaitMillis="10000"-->
-              <!--username="b13d41b6bf39f9" password="2505ccb0" driverClassName="com.mysql.jdbc.Driver"-->
-              <!--url="jdbc:mysql://us-cdbr-iron-east-01.cleardb.net/heroku_1fca635d57775a0"/>-->
-</Context>
