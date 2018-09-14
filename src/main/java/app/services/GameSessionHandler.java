@@ -40,7 +40,7 @@ public class GameSessionHandler {
             String id = String.valueOf(new Date().getTime());
             GameSession gameSession = new GameSession(id ,sessionOne, sessionTwo);
             sessionGame.add(gameSession);
-            Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession, GameStatusNotifier.gameStatus.START);
+            Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession);
             if (notifyObject != null) {
                 notifyObject.forEach((k, v) -> sendToSession(k, v));
             }
@@ -61,26 +61,26 @@ public class GameSessionHandler {
 
         }
     }
-    public static void removeSession(String sessionId){
+    public static void removeSession(String sessionId) {
         sessionAccumulator = sessionAccumulator.stream().filter(x -> x.getSession().equals(sessionId))
                 .collect(Collectors.toCollection(LinkedBlockingQueue<UserSession>::new));
-        GameSession gameSession = sessionGame.stream().filter( x -> x.getSessionOne().getSessionId().equals(sessionId) ||
+        GameSession gameSession = sessionGame.stream().filter(x -> x.getSessionOne().getSessionId().equals(sessionId) ||
                 x.getSessionTwo().getSessionId().equals(sessionId)).findFirst().orElse(null);
-        if (gameSession != null){
+        if (gameSession != null) {
 
-            //if(!gameSession.getSessionTwo().getSessionId().equals(sessionId)) {
-              //  sendToSession(gameSession.getSessionTwo(),    );
-            //}
-            Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession,
-                    GameStatusNotifier.gameStatus.CONNECTIONLOST);
-            notifyObject.forEach((k, v) -> sendToSession(k, v));
+//        if(!gameSession.getSessionTwo().getSessionId().equals(sessionId)) {
+//            sendToSession(gameSession.getSessionTwo(),    );
+//        }
+//        Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession,
+//                GameStatusNotifier.gameStatus.CONNECTIONLOST);
+//        notifyObject.forEach((k, v) -> sendToSession(k, v));
             sessionGame = sessionGame.stream().filter(x -> !x.getSessionOne().getSessionId().equals(sessionId) &&
                     !x.getSessionTwo().getSessionId().equals(sessionId))
                     .collect(Collectors.toCollection(CopyOnWriteArrayList<GameSession>::new));
         }
-
-
     }
+
+
     public static void addActionToGameSession(BiConsumer<GameSession, Session> func, Predicate<GameSession> pred, Session session){
         sessionGame.forEach(k -> {
             if (pred.test(k))

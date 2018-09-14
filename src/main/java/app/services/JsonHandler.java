@@ -30,7 +30,7 @@ public class JsonHandler  {
             Field[] fields = type.getDeclaredFields();
             for (Field field: fields ) {
                 try{field.setAccessible(true);
-                    jsonObjBuilder.add(field.getName(), (int)field.get(obj));}
+                    jsonObjBuilder.add(field.getName(), field.get(obj).toString());}
                 catch (IllegalAccessException ex) {
                     ex.printStackTrace();
                 }

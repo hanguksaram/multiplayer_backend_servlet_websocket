@@ -6,6 +6,24 @@ public class UserHeroDto {
     private int health;
     private int healthPercentage = 100;
     private int currentHealth;
+    private int damageDealed;
+    private int isTurn;
+
+    public int getIsTurn() {
+        return isTurn;
+    }
+
+    public void setIsTurn(int isTurn) {
+        this.isTurn = isTurn;
+    }
+
+    public int getDamageDealed() {
+        return damageDealed;
+    }
+
+    public void setDamageDealed(int damageDealed) {
+        this.damageDealed = damageDealed;
+    }
 
     public int getSessionId() {
         return sessionId;

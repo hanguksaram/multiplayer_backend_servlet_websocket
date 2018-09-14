@@ -26,13 +26,3 @@
     background: black;
     color: white;
 }
-.characteristic {
-    text-align: center;
-    font-weight: 600;
-    font-size: 2rem;
-    margin: 0 auto;
-}
-.characteristic > div {
-    padding: 1rem;
-
-}

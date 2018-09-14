@@ -30,7 +30,13 @@ public class GameServerHandler {
 
     @OnClose
     public void close(Session session) {
-        GameSessionHandler.removeSession(session.getId());
+        try {
+            GameSessionHandler.removeSession(session.getId());
+            session.close();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @OnError
@@ -48,7 +54,7 @@ public class GameServerHandler {
                         x -> x.getGameSessionId().equals(clientMessages[1]), session);
                 GameSession gameSession = GameSessionHandler.findGameSessionByUserSession(session);
                 if (gameSession != null) {
-                    Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession, GameStatusNotifier.gameStatus.DAMAGE);
+                    Map<Session, String> notifyObject = GameStatusNotifier.createGameNotification(gameSession);
                     if (notifyObject != null) {
                         notifyObject.forEach((k, v) -> GameSessionHandler.sendToSession(k, v));
                     }
