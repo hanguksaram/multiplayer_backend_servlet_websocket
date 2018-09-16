@@ -6,6 +6,7 @@
     justify-content: center;
     align-items: center;
     background: whitesmoke;
+    flex-direction: column;
 }
 .login_form {
     display: flex;
@@ -30,4 +31,200 @@
 .login_form > input[type=submit]:hover {
     background: black;
     color: white;
+}
+footer{
+    position: fixed;
+    bottom: 0;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+    height: 30rem;
+    justify-content: space-evenly;
+}
+.menu > button {
+    border: none;
+    background: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    font-weight: 600;
+    font-size: 2rem;
+}
+.menu > button:hover {
+    background: black;
+    color: white;
+}
+.characteristic {
+    text-align: center;
+    font-weight: 600;
+    font-size: 2rem;
+    margin: 0 auto;
+}
+.characteristic > div {
+    padding: 1rem;
+
+}
+.container__preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.preloader {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    animation-name: preloader;
+    animation-duration: 3s;
+    border-top: 3px solid #000000;
+    animation-timing-function: ease-in;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    background: whitesmoke;;
+    display: flex;
+    justify-content: space-between;
+}
+@keyframes preloader {
+    100%{
+        transform: rotate(360deg);
+    }
+}
+.attack_btn {
+    width: 20%;
+    margin: 0 auto;
+    border: none;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    background: red;
+    font-weight: 600;
+    color: white;
+    font-size: 2.2rem;
+    cursor: pointer;
+}
+#notification {
+    text-align: center;
+    color: white;
+}
+.attack_btn:hover {
+    transform: scale(1.1);
+}
+.attack_btn:disabled,
+.attack_btn[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+.gamefield_enemy img {
+    float: right;
+}
+.health_points {
+    width: 35rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.health_points span {margin: 0 5px; white-space: nowrap;}
+.myProgress {
+    border-radius: 10px;
+    width: 100%;
+    height: 10px;
+    background-color: grey;
+}
+.myBar {
+    border-radius: 10px;
+    width: 100%;
+    height: 10px;
+    background-color: #1bc147;
+}
+.body_game {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: black;
+    justify-content: center;
+}
+.game_container {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+
+
+}
+a {
+    text-decoration: none;
+    color: #BDC3C7  ;
+    font-weight: 600;
+}
+.body_game > * {
+    color: black;
+    font-weight: 600;
+    font-size: 2rem;
+}
+main > *, .top_bar, .bottom_bar {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+
+}
+.gamefield {
+    justify-content: center
+}
+.gamefield div {
+    background: white;
+    flex: 0 0 40%;
+    display: flex;
+    justify-content: inherit;
+    align-items: flex-end;
+    overflow: hidden;
+}
+main {
+    display: flex;
+    height: 100%;
+
+}
+
+aside {flex: 1 1 auto;}
+article {
+    flex: 3 1 auto;
+}
+.top_bar {flex-basis: 20px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.bottom_bar, .top_bar {
+    background: #FAF4B4;
+
+}
+
+.bottom_bar {
+    flex-basis: 70px;
+}
+.bottom_bar p{text-align: center;}
+#timer {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#timer__timer {
+    font-size: 4rem;
+}
+#enemy_description {
+    display: none;
+    margin-top: 3rem;
+    width: 300px;
+    height: 300px;
+    flex-direction: column;
+    align-items: center;
+}
+.container.container--closed {
+    transition: all 3s ease-in-out 0s;
+    transform: translateY(-100vh);
 }

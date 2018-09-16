@@ -32,20 +32,18 @@ public class DuelRoomServlet extends HttpServlet {
 
         HttpSession session = req.getSession();
         UserDtoResponse userDtoResponse = (UserDtoResponse)session.getAttribute("user");
-        if (userDtoResponse != null) {
-
-            int userId = userDtoResponse.getId();
-            UserHero userHero = this.charRepo.getCharacterByUserId(userId);
-            if (userHero == null) {
-                userHero = this.charRepo.createCharacter(userId);
-            }
-            userDtoResponse.setUserHero(new UserHeroDto(userHero.getRating(),userHero.getDamageMultiplier(), userHero.getHealth()));
-            session.setAttribute("user", userDtoResponse);
-            req.setAttribute("userHero", userHero);
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/duels.jsp");
-            requestDispatcher.forward(req, resp);
+        int userId = userDtoResponse.getId();
+        UserHero userHero = this.charRepo.getCharacterByUserId(userId);
+        if (userHero == null) {
+            userHero = this.charRepo.createCharacter(userId);
         }
-        resp.sendRedirect("/index");
-
+        userDtoResponse.setUserHero(new UserHeroDto(userHero.getRating(),userHero.getDamageMultiplier(), userHero.getHealth()));
+        session.setAttribute("user", userDtoResponse);
+        req.setAttribute("userHero", userHero);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/duels.jsp");
+        requestDispatcher.forward(req, resp);
     }
+
+
 }
+

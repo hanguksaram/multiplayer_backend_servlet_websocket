@@ -23,11 +23,12 @@ public class UnitOfWork {
         }
     }
     public static Connection getConnection() throws URISyntaxException, SQLException {
-        //URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
+
         try{Class.forName("com.mysql.jdbc.Driver");}
         catch(ClassNotFoundException ex) {
             ex.printStackTrace();
         }
+        //URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
         URI dbUri = new URI("mysql://newuser:password@localhost:3306/test01");
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
