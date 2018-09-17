@@ -3,10 +3,10 @@ package app.services;
 import app.dtos.UserDtoResponse;
 import app.dtos.UserHeroDto;
 import app.models.GameSession;
-import app.repos.CharacterRepo;
+import app.models.UserHero;
+import app.repos.BaseRepo;
 import app.repos.CharacterRepoImpl;
-import javax.annotation.Resource;
-import javax.sql.DataSource;
+
 import javax.websocket.Session;
 import java.util.Random;
 
@@ -15,11 +15,11 @@ public class GameMechanicsHandler {
 
 
 
-    private static CharacterRepo charRepo;
+    private static BaseRepo<UserHero, UserDtoResponse> charRepo;
     private static int minDamage = 3;
     static {
         try {
-            charRepo = new CharacterRepoImpl(null);
+            charRepo = new CharacterRepoImpl();
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -78,8 +78,8 @@ public class GameMechanicsHandler {
         looser.getUserHero().setRating(looser.getUserHero().getRating() - 1);
         looser.getUserHero().setHealth(looser.getUserHero().getHealth() + 1);
         looser.getUserHero().setDamageMultiplier(looser.getUserHero().getDamageMultiplier() + 1);
-        charRepo.updateCharacter(winner);
-        charRepo.updateCharacter(looser);
+        charRepo.updateEntitybyDto(winner);
+        charRepo.updateEntitybyDto(looser);
 
     }
 

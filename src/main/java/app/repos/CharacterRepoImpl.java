@@ -1,114 +1,130 @@
 package app.repos;
 
+import app.Utils.Utils;
 import app.dtos.UserDtoResponse;
+import app.models.DbModel;
+import app.models.User;
 import app.models.UserHero;
 
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class CharacterRepoImpl implements CharacterRepo {
+public class CharacterRepoImpl implements BaseRepo<UserHero, UserDtoResponse> {
 
-    private DataSource dataSource;
-
-    public CharacterRepoImpl(DataSource dataSource)
-    {
-        this.dataSource = dataSource;
-    }
-    public UserHero getCharacterByUserId(int userId) {
+    @Override
+    public DbModel<UserHero> getEntityById(int id) {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet resultSet = null;
         UserHero userHero = new UserHero();
+        DbModel<UserHero> heroModel = new DbModel<>();
+        double sqlDuration = 0;
         try {
             conn = UnitOfWork.getConnection();
-            //conn = dataSource.getConnection();
-            String sql = "select * from Characters where User_ID = " + "'" + userId + "'";
-            stmt = conn.createStatement();
-            resultSet = stmt.executeQuery(sql);
+            String sql = "select * from Characters where User_ID = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 userHero.setId(resultSet.getInt("User_ID"));
                 userHero.setRating(resultSet.getInt("Rating"));
                 userHero.setDamageMultiplier(resultSet.getInt("DamageMultiplier"));
                 userHero.setHealth(resultSet.getInt("Health"));
             }
+            sqlDuration = getLastQueryDuration();
+            heroModel.setEntity(userHero);
+            heroModel.setSqlQueryDuration(sqlDuration);
+
 
         }
         catch (Exception ex) {
             ex.printStackTrace();
+            heroModel.setSuccess(false);
         }
         finally {
             UnitOfWork.close(conn, stmt, resultSet);
+            return heroModel;
         }
-        return userHero.getId() != 0  ? userHero : null;
+
     }
 
-
-    public UserHero createCharacter(int userId) {
-
+    @Override
+    public DbModel<UserHero> createEntityById(int id) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet resultSet = null;
-        UserHero userHero = null;
-
+        DbModel<UserHero> heroModel = new DbModel<>();
+        double sqlDuration = 0;
         try {
             conn = UnitOfWork.getConnection();
-            //conn = dataSource.getConnection();
-            String sql = "insert into Characters " +
-                    "values (?, ?, ?, ?)";
+            String sql = ("insert into Characters " +
+                    "values (?, ?, ?, ?)");
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userId);
+            stmt.setInt(1, id);
             stmt.setInt(2, 1);//Raitng
             stmt.setInt(3, 10);//Damage
             stmt.setInt(4,100);//Health
             stmt.execute();
-            userHero = getCharacterByUserId(userId);
+            sqlDuration = getLastQueryDuration();
+            heroModel = this.getEntityById(id);
+            heroModel.setSqlCount(heroModel.getSqlCount() + 1);
+            heroModel.setSqlQueryDuration(heroModel.getSqlQueryDuration() + sqlDuration);
 
         }
         catch (Exception ex) {
             ex.printStackTrace();
+            heroModel.setSuccess(false);
         }
         finally {
             UnitOfWork.close(conn, stmt, resultSet);
-            return userHero;
+            return heroModel;
         }
-
     }
 
-
-    public boolean updateCharacter(UserDtoResponse userDtoResponse) {
-
+    @Override
+    public DbModel<UserHero> updateEntitybyDto(UserDtoResponse dtoModel) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet resultSet = null;
-        boolean updated = true;
-
+        DbModel<UserHero> heroModel = new DbModel<>();
+        double sqlDuration = 0;
 
         try {
-
-            //conn = dataSource.getConnection();
             conn = UnitOfWork.getConnection();
             String sql = "update Characters " +
                     "set Rating = ? , DamageMultiplier = ? , Health = ? " +
                     "where User_ID =  ?";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userDtoResponse.getUserHero().getRating());
-            stmt.setInt(2, userDtoResponse.getUserHero().getDamageMultiplier());//Raitng
-            stmt.setInt(3, userDtoResponse.getUserHero().getHealth());//Damage
-            stmt.setInt(4,userDtoResponse.getId());//Health
+            stmt.setInt(1, dtoModel.getUserHero().getRating());
+            stmt.setInt(2, dtoModel.getUserHero().getDamageMultiplier());//Raitng
+            stmt.setInt(3, dtoModel.getUserHero().getHealth());//Damage
+            stmt.setInt(4, dtoModel.getId());//Health
             stmt.execute();
-
-
+            sqlDuration = getLastQueryDuration();
+            heroModel = this.getEntityById(dtoModel.getId());
+            heroModel.setSqlCount(heroModel.getSqlCount() + 1);
+            heroModel.setSqlQueryDuration(heroModel.getSqlQueryDuration() + sqlDuration);
 
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            updated = false;
+            heroModel.setSuccess(false);
+
         }
         finally {
             UnitOfWork.close(conn, stmt, resultSet);
-            return updated;
+            return heroModel;
         }
     }
+
+    @Override
+    public DbModel<UserHero> getEntityByName(String name) {
+        return null;
+    }
+
+    @Override
+    public DbModel<UserHero> createEntityByDto(UserDtoResponse dtoModel) {
+        return null;
+    }
 }
-    //INSERT INTO `test01`.`Characters` (`User_ID`, `Rating`, `DamageMultiplier`) VALUES ('12', '1', '1');

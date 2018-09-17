@@ -1,4 +1,5 @@
 <%@ tag import="app.services.RenderPageLogger" %>
+<%@ tag import="java.util.Optional" %>
 <%@tag description="Template" pageEncoding="UTF-8"%>
 <%@attribute name="footer" fragment="true" %>
 <html>
@@ -14,9 +15,11 @@
 </div>
 <footer id="pagefooter">
     <%
+        Optional<String> sqlInfo = Optional.ofNullable((String)session.getAttribute("sqlLog"));
         long requestTime = (long)request.getAttribute("requestTime");
         long pageRenderTime = RenderPageLogger.calculatePageRenderTime(requestTime);
-        out.println("Page: " +pageRenderTime + " ms");
+        out.println("Page: " +pageRenderTime + " ms " + sqlInfo.orElse(""));
+
     %>
 </footer>
 </body>
