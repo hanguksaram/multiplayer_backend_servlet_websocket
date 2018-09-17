@@ -5,25 +5,13 @@
 
 ИНСТРУКЦИИ ЛОКАЛЬНЫЙ ДЕПЛОЙ:
 1. выполнить sql script на локальной бд (конекшн стринг захадкожен в warе)
--- ----------------------------------------------------------------------------
--- MySQL Workbench Migration
--- Migrated Schemata: test02
--- Source Schemata: test01
--- Created: Thu Sep 13 20:26:12 2018
--- Workbench Version: 6.3.8
--- ----------------------------------------------------------------------------
+
 
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ----------------------------------------------------------------------------
--- Schema test01
--- ----------------------------------------------------------------------------
 
 CREATE SCHEMA IF NOT EXISTS `test01` ;
 
--- ----------------------------------------------------------------------------
--- Table test02.Characters
--- ----------------------------------------------------------------------------
 CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';                       |
 GRANT ALL PRIVILEGES ON `test01`.* TO 'newuser'@'localhost';  
 
@@ -41,9 +29,7 @@ CREATE TABLE IF NOT EXISTS `test01`.`Characters` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
--- ----------------------------------------------------------------------------
--- Table test02.Users
--- ----------------------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `test01`.`Users` (
   `User_ID` INT(11) NOT NULL AUTO_INCREMENT,
   `Login` VARCHAR(45) NOT NULL,
